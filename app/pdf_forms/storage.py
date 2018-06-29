@@ -2,11 +2,10 @@ import os
 import tempfile
 from boto.s3.connection import S3Connection
 from boto.s3.key import Key
+from config import BUCKET_NAME
 
 S3_CONNECTION = S3Connection(os.environ.get('AWS_ACCESS_KEY'),
                              os.environ.get('AWS_SECRET_KEY'))
-BUCKET_NAME = 'hellovote'
-
 
 def write_to_tmp(file_stream):
     tmp = tempfile.NamedTemporaryFile(delete=False)

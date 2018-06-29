@@ -9,6 +9,7 @@ VOTEBOT_API_KEY = os.environ.get('VOTEBOT_API_KEY', None)
 
 AWS_ACCESS_KEY = os.environ.get('AWS_ACCESS_KEY')
 AWS_SECRET_KEY = os.environ.get('AWS_SECRET_KEY')
+BUCKET_NAME = os.environ.get('S3_BUCKET_NAME')
 
 SENTRY_DSN = os.environ.get('SENTRY_DSN')
 RAVEN_IGNORE_EXCEPTIONS = ['OVRError', 'ValidationError']
