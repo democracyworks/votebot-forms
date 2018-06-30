@@ -58,14 +58,16 @@ def update_form_urls():
     cur = db.cursor()
 
     query = "SELECT id, settings from users where settings->>'nvra_pdf_url' not LIKE %s"
-    cur.execute(query, ("https://hellovote.s3.amazonaws.com/forms/%/hellovote-registration-print-me.pdf?Signature=%",))
+    s3_bucket_url = "https://{0}.s3.amazonaws.com".format(current_app.config.BUCKET_NAME)
+    s3_form_path = "/forms/%/hellovote-registration-print-me.pdf?Signature=%"
+    cur.execute(query, (s3_bucket_url + s3_form_path,))
     ids = cur.fetchall()
 
     print len(ids), "forms without signed urls"
 
     for (user_id, settings) in ids:
-        pdf_filename = settings['nvra_pdf_url'].replace('https://hellovote.s3.amazonaws.com', '')
-        signed_url = sign_s3_url('hellovote', pdf_filename)
+        pdf_filename = settings['nvra_pdf_url'].replace(s3_bucket_url, '')
+        signed_url = sign_s3_url(current_app.config.BUCKET_NAME, pdf_filename)
         settings['nvra_pdf_url'] = signed_url
 
         update_sql = "UPDATE users SET settings=%s WHERE id = %s"
